@@ -2,6 +2,7 @@ import React, { forwardRef } from "react";
 import PropTypes from "prop-types";
 import Form from "./";
 
+//通过传入部件widget和字段组件field,  自定义主题
 function withTheme(themeProps) {
   return forwardRef(({ fields, widgets, ...directProps }, ref) => {
     fields = { ...themeProps.fields, ...fields };

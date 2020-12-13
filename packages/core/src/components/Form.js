@@ -19,6 +19,7 @@ import validateFormData, { toErrorList } from "../validate";
 import { mergeObjects } from "../utils";
 
 export default class Form extends Component {
+  // 默认porps
   static defaultProps = {
     uiSchema: {},
     noValidate: false,
@@ -31,16 +32,20 @@ export default class Form extends Component {
 
   constructor(props) {
     super(props);
+    // 根据props生成state
     this.state = this.getStateFromProps(props, props.formData);
+    // 内部formData与props formData不同触发onChange
     if (
       this.props.onChange &&
       !deepEquals(this.state.formData, this.props.formData)
     ) {
       this.props.onChange(this.state);
     }
+    // form表单Ref
     this.formElement = null;
   }
 
+  // 接受props后，计算更新state，不相同会触发onChange
   UNSAFE_componentWillReceiveProps(nextProps) {
     const nextState = this.getStateFromProps(nextProps, nextProps.formData);
     if (
@@ -53,10 +58,13 @@ export default class Form extends Component {
     this.setState(nextState);
   }
 
+  // 从porps中计算state
   getStateFromProps(props, inputFormData) {
     const state = this.state || {};
+    // 优先使用新props上的schema、uiSchema、liveValidate
     const schema = "schema" in props ? props.schema : this.props.schema;
     const uiSchema = "uiSchema" in props ? props.uiSchema : this.props.uiSchema;
+    // 传入inputFormData代表受控组件
     const edit = typeof inputFormData !== "undefined";
     const liveValidate =
       "liveValidate" in props ? props.liveValidate : this.props.liveValidate;
@@ -64,6 +72,7 @@ export default class Form extends Component {
     const rootSchema = schema;
     const formData = getDefaultFormState(schema, inputFormData, rootSchema);
     const retrievedSchema = retrieveSchema(schema, rootSchema, formData);
+    // 自定义转化
     const customFormats = props.customFormats;
     const additionalMetaSchemas = props.additionalMetaSchemas;
 
@@ -388,8 +397,7 @@ export default class Form extends Component {
   };
 
   getRegistry() {
-    // For BC, accept passed SchemaField and TitleField props and pass them to
-    // the "fields" registry one.
+    // 获取默认的字段、组件
     const { fields, widgets } = getDefaultRegistry();
     return {
       fields: { ...fields, ...this.props.fields },
@@ -433,10 +441,15 @@ export default class Form extends Component {
       formContext,
     } = this.props;
 
+    // 内部状态
     const { schema, uiSchema, formData, errorSchema, idSchema } = this.state;
+    // 融合porps，得到最终的参数
     const registry = this.getRegistry();
+    // schema字段组件
     const _SchemaField = registry.fields.SchemaField;
+    // 默认是form标签，可传入组件
     const FormTag = tagName ? tagName : "form";
+    // 处理废弃的autocomplete
     if (deprecatedAutocomplete) {
       console.warn(
         "Using autocomplete property of Form is deprecated, use autoComplete instead."

@@ -1,5 +1,6 @@
 import React from "react";
 
+// 显示error列表
 export default function ErrorList(props) {
   const { errors } = props;
   return (
