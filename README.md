@@ -20,13 +20,15 @@ npm start
 > 给自己定排期：2020.12.14 ~ 2020.12.31
 
 - [ ] Form组件
-- [x] ErrorList组件
+- [ ] Error以及ErrorList组件
+- [ ] SchemaField
 - [x] AddButton组件
 - [x] withTheme组件
 - [ ] utils工具函数
-- [ ] validate表单校验
+- [ ] validate表单校验å
 - [ ] fields组件
 - [ ] widgets部件
 - [ ] playgorund各种示例debug
 - [ ] 写一篇博客
+- [ ] rootSchema、formContext
 

@@ -76,6 +76,7 @@ export function canExpand(schema, uiSchema, formData) {
   return true;
 }
 
+// 获取默认的主题参数
 export function getDefaultRegistry() {
   return {
     fields: require("./components/fields").default,
@@ -296,6 +297,7 @@ function computeDefaults(
   return defaults;
 }
 
+// todo
 export function getDefaultFormState(
   _schema,
   formData,
@@ -900,6 +902,7 @@ function isArguments(object) {
   return Object.prototype.toString.call(object) === "[object Arguments]";
 }
 
+// todo
 export function deepEquals(a, b, ca = [], cb = []) {
   // Partially extracted from node-deeper and adapted to exclude comparison
   // checks for functions.
@@ -977,11 +980,13 @@ export function deepEquals(a, b, ca = [], cb = []) {
   }
 }
 
+// 是否需要渲染，比较组件的porps、state与下一次的porps、state是否相等
 export function shouldRender(comp, nextProps, nextState) {
   const { props, state } = comp;
   return !deepEquals(props, nextProps) || !deepEquals(state, nextState);
 }
 
+// todo
 export function toIdSchema(
   schema,
   id,

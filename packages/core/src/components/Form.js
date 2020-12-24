@@ -145,6 +145,7 @@ export default class Form extends Component {
     return nextState;
   }
 
+  // 生命周期，是否需要更新组件，减少渲染
   shouldComponentUpdate(nextProps, nextState) {
     return shouldRender(this, nextProps, nextState);
   }
@@ -396,6 +397,7 @@ export default class Form extends Component {
     );
   };
 
+  // 融合porps，注册组件、部件等。
   getRegistry() {
     // 获取默认的字段、组件
     const { fields, widgets } = getDefaultRegistry();
