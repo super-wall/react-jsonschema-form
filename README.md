@@ -17,15 +17,16 @@ npm start
 
 ## TODO
 
-> 给自己定排期：2020.12.14 ~ 2020.12.31
+> 给自己定排期：2020.03.08 ~ 2020.03.20
 
-- [ ] Form组件
-- [ ] Error以及ErrorList组件
-- [ ] SchemaField
-- [x] AddButton组件
+- [x] Form组件
+- [x] SchemaField
+- [ ] onSubmit
+- [ ] onChange
+- [ ] validate校验、Error以及ErrorList组件
+- [ ] AddButton组件
 - [x] withTheme组件
 - [ ] utils工具函数
-- [ ] validate表单校验å
 - [ ] fields组件
 - [ ] widgets部件
 - [ ] playgorund各种示例debug

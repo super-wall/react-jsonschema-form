@@ -34,7 +34,7 @@ export default class Form extends Component {
     super(props);
     // 根据props生成state
     this.state = this.getStateFromProps(props, props.formData);
-    // 内部formData与props formData不同触发onChange
+    // 内部formData与props.formData不同触发onChange
     if (
       this.props.onChange &&
       !deepEquals(this.state.formData, this.props.formData)
@@ -447,6 +447,7 @@ export default class Form extends Component {
     const { schema, uiSchema, formData, errorSchema, idSchema } = this.state;
     // 融合porps，得到最终的参数
     const registry = this.getRegistry();
+    console.log("registry", registry);
     // schema字段组件
     const _SchemaField = registry.fields.SchemaField;
     // 默认是form标签，可传入组件

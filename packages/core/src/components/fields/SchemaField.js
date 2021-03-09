@@ -237,6 +237,7 @@ function SchemaFieldRender(props) {
     registry = getDefaultRegistry(),
     wasPropertyKeyModified = false,
   } = props;
+  console.log(`props ${name} => `, props);
   const { rootSchema, fields, formContext } = registry;
   const FieldTemplate =
     uiSchema["ui:FieldTemplate"] || registry.FieldTemplate || DefaultTemplate;

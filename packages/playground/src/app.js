@@ -509,7 +509,7 @@ class Playground extends Component {
             <div className="col-sm-8">
               <Selector onSelected={this.load} />
             </div>
-            <div className="col-sm-2">
+            {/* <div className="col-sm-2">
               <Form
                 idPrefix="rjsf_options"
                 schema={liveSettingsSchema}
@@ -517,8 +517,8 @@ class Playground extends Component {
                 onChange={this.setLiveSettings}>
                 <div />
               </Form>
-            </div>
-            <div className="col-sm-2">
+            </div> */}
+            {/* <div className="col-sm-2">
               <ThemeSelector
                 themes={themes}
                 theme={theme}
@@ -532,7 +532,8 @@ class Playground extends Component {
                 />
               )}
               <CopyLink shareURL={this.state.shareURL} onShare={this.onShare} />
-            </div>
+            </div> */}
+            ``
           </div>
         </div>
         <div className="col-sm-7">
