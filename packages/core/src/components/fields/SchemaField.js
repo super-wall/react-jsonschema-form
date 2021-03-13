@@ -237,7 +237,7 @@ function SchemaFieldRender(props) {
     registry = getDefaultRegistry(),
     wasPropertyKeyModified = false,
   } = props;
-  console.log(`props ${name} => `, props);
+  console.log(`%c ${name} =>`, "font-weight:bold;color:#f00;", props);
   const { rootSchema, fields, formContext } = registry;
   const FieldTemplate =
     uiSchema["ui:FieldTemplate"] || registry.FieldTemplate || DefaultTemplate;

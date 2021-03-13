@@ -27,6 +27,7 @@ function StringField(props) {
     registry = getDefaultRegistry(),
     rawErrors,
   } = props;
+  console.log("String", props);
   const { title, format } = schema;
   const { widgets, formContext } = registry;
   const enumOptions = isSelect(schema) && optionsList(schema);

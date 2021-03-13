@@ -21,8 +21,9 @@ npm start
 
 - [x] Form组件
 - [x] SchemaField
+- [ ] Array
 - [ ] onSubmit
-- [ ] onChange
+- [x] onChange
 - [ ] validate校验、Error以及ErrorList组件
 - [ ] AddButton组件
 - [x] withTheme组件
