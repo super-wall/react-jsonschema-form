@@ -1,14 +1,14 @@
-import React, { Component } from "react";
-import MonacoEditor from "react-monaco-editor";
-import { samples } from "./samples";
-import "react-app-polyfill/ie11";
-import Form, { withTheme } from "@rjsf/core";
-import DemoFrame from "./DemoFrame";
+import React, { Component } from 'react';
+import MonacoEditor from 'react-monaco-editor';
+import { samples } from './samples';
+import 'react-app-polyfill/ie11';
+import Form, { withTheme } from '@rjsf/core';
+import DemoFrame from './DemoFrame';
 
 // deepEquals and shouldRender and isArguments are copied from rjsf-core. TODO: unify these utility functions.
 
 function isArguments(object) {
-  return Object.prototype.toString.call(object) === "[object Arguments]";
+  return Object.prototype.toString.call(object) === '[object Arguments]';
 }
 
 function deepEquals(a, b, ca = [], cb = []) {
@@ -17,11 +17,11 @@ function deepEquals(a, b, ca = [], cb = []) {
   // https://github.com/othiym23/node-deeper
   if (a === b) {
     return true;
-  } else if (typeof a === "function" || typeof b === "function") {
+  } else if (typeof a === 'function' || typeof b === 'function') {
     // Assume all functions are equivalent
     // see https://github.com/rjsf-team/react-jsonschema-form/issues/255
     return true;
-  } else if (typeof a !== "object" || typeof b !== "object") {
+  } else if (typeof a !== 'object' || typeof b !== 'object') {
     return false;
   } else if (a === null || b === null) {
     return false;
@@ -39,7 +39,7 @@ function deepEquals(a, b, ca = [], cb = []) {
     if (!(isArguments(a) && isArguments(b))) {
       return false;
     }
-    let slice = Array.prototype.slice;
+    let { slice } = Array.prototype;
     return deepEquals(slice.call(a), slice.call(b), ca, cb);
   } else {
     if (a.constructor !== b.constructor) {
@@ -67,7 +67,7 @@ function deepEquals(a, b, ca = [], cb = []) {
 
     ka.sort();
     kb.sort();
-    for (var j = ka.length - 1; j >= 0; j--) {
+    for (let j = ka.length - 1; j >= 0; j--) {
       if (ka[j] !== kb[j]) {
         return false;
       }
@@ -96,12 +96,12 @@ function shouldRender(comp, nextProps, nextState) {
 const log = type => console.log.bind(console, type);
 const toJson = val => JSON.stringify(val, null, 2);
 const liveSettingsSchema = {
-  type: "object",
+  type: 'object',
   properties: {
-    validate: { type: "boolean", title: "Live validation" },
-    disable: { type: "boolean", title: "Disable whole form" },
-    omitExtraData: { type: "boolean", title: "Omit extra data" },
-    liveOmit: { type: "boolean", title: "Live omit" },
+    validate: { type: 'boolean', title: 'Live validation' },
+    disable: { type: 'boolean', title: 'Disable whole form' },
+    omitExtraData: { type: 'boolean', title: 'Omit extra data' },
+    liveOmit: { type: 'boolean', title: 'Live omit' },
   },
 };
 
@@ -132,29 +132,16 @@ class GeoPosition extends Component {
         <h3>Hey, I'm a custom component</h3>
         <p>
           I'm registered as <code>geo</code> and referenced in
-          <code>uiSchema</code> as the <code>ui:field</code> to use for this
-          schema.
+          <code>uiSchema</code> as the <code>ui:field</code> to use for this schema.
         </p>
         <div className="row">
           <div className="col-sm-6">
             <label>Latitude</label>
-            <input
-              className="form-control"
-              type="number"
-              value={lat}
-              step="0.00001"
-              onChange={this.onChange("lat")}
-            />
+            <input className="form-control" type="number" value={lat} step="0.00001" onChange={this.onChange('lat')} />
           </div>
           <div className="col-sm-6">
             <label>Longitude</label>
-            <input
-              className="form-control"
-              type="number"
-              value={lon}
-              step="0.00001"
-              onChange={this.onChange("lon")}
-            />
+            <input className="form-control" type="number" value={lon} step="0.00001" onChange={this.onChange('lon')} />
           </div>
         </div>
       </div>
@@ -174,10 +161,7 @@ class Editor extends Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     if (this.state.valid) {
-      return (
-        JSON.stringify(JSON.parse(nextProps.code)) !==
-        JSON.stringify(JSON.parse(this.state.code))
-      );
+      return JSON.stringify(JSON.parse(nextProps.code)) !== JSON.stringify(JSON.parse(this.state.code));
     }
     return false;
   }
@@ -185,9 +169,7 @@ class Editor extends Component {
   onCodeChange = code => {
     try {
       const parsedCode = JSON.parse(code);
-      this.setState({ valid: true, code }, () =>
-        this.props.onChange(parsedCode)
-      );
+      this.setState({ valid: true, code }, () => this.props.onChange(parsedCode));
     } catch (err) {
       this.setState({ valid: false, code });
     }
@@ -195,13 +177,13 @@ class Editor extends Component {
 
   render() {
     const { title } = this.props;
-    const icon = this.state.valid ? "ok" : "remove";
-    const cls = this.state.valid ? "valid" : "invalid";
+    const icon = this.state.valid ? 'ok' : 'remove';
+    const cls = this.state.valid ? 'valid' : 'invalid';
     return (
       <div className="panel panel-default">
         <div className="panel-heading">
           <span className={`${cls} glyphicon glyphicon-${icon}`} />
-          {" " + title}
+          {` ${ title}`}
         </div>
         <MonacoEditor
           language="json"
@@ -219,36 +201,29 @@ class Editor extends Component {
 class Selector extends Component {
   constructor(props) {
     super(props);
-    this.state = { current: "Simple" };
+    this.state = { current: 'Simple' };
   }
 
   shouldComponentUpdate(nextProps, nextState) {
     return shouldRender(this, nextProps, nextState);
   }
 
-  onLabelClick = label => {
-    return event => {
-      event.preventDefault();
-      this.setState({ current: label });
-      setImmediate(() => this.props.onSelected(samples[label]));
-    };
+  onLabelClick = label => event => {
+    event.preventDefault();
+    this.setState({ current: label });
+    setImmediate(() => this.props.onSelected(samples[label]));
   };
 
   render() {
     return (
       <ul className="nav nav-pills">
-        {Object.keys(samples).map((label, i) => {
-          return (
-            <li
-              key={i}
-              role="presentation"
-              className={this.state.current === label ? "active" : ""}>
+        {Object.keys(samples).map((label, i) => (
+            <li key={i} role="presentation" className={this.state.current === label ? 'active' : ''}>
               <a href="#" onClick={this.onLabelClick(label)}>
                 {label}
               </a>
             </li>
-          );
-        })}
+        ))}
       </ul>
     );
   }
@@ -256,11 +231,11 @@ class Selector extends Component {
 
 function ThemeSelector({ theme, themes, select }) {
   const schema = {
-    type: "string",
+    type: 'string',
     enum: Object.keys(themes),
   };
   const uiSchema = {
-    "ui:placeholder": "Select theme",
+    'ui:placeholder': 'Select theme',
   };
   return (
     <Form
@@ -269,9 +244,7 @@ function ThemeSelector({ theme, themes, select }) {
       schema={schema}
       uiSchema={uiSchema}
       formData={theme}
-      onChange={({ formData }) =>
-        formData && select(formData, themes[formData])
-      }>
+      onChange={({ formData }) => formData && select(formData, themes[formData])}>
       <div />
     </Form>
   );
@@ -279,11 +252,11 @@ function ThemeSelector({ theme, themes, select }) {
 
 function SubthemeSelector({ subtheme, subthemes, select }) {
   const schema = {
-    type: "string",
+    type: 'string',
     enum: Object.keys(subthemes),
   };
   const uiSchema = {
-    "ui:placeholder": "Select subtheme",
+    'ui:placeholder': 'Select subtheme',
   };
   return (
     <Form
@@ -292,9 +265,7 @@ function SubthemeSelector({ subtheme, subthemes, select }) {
       schema={schema}
       uiSchema={uiSchema}
       formData={subtheme}
-      onChange={({ formData }) =>
-        formData && select(formData, subthemes[formData])
-      }>
+      onChange={({ formData }) => formData && select(formData, subthemes[formData])}>
       <div />
     </Form>
   );
@@ -303,7 +274,7 @@ function SubthemeSelector({ subtheme, subthemes, select }) {
 class CopyLink extends Component {
   onCopyClick = event => {
     this.input.select();
-    document.execCommand("copy");
+    document.execCommand('copy');
   };
 
   render() {
@@ -317,17 +288,9 @@ class CopyLink extends Component {
     }
     return (
       <div className="input-group">
-        <input
-          type="text"
-          ref={input => (this.input = input)}
-          className="form-control"
-          defaultValue={shareURL}
-        />
+        <input type="text" ref={input => (this.input = input)} className="form-control" defaultValue={shareURL} />
         <span className="input-group-btn">
-          <button
-            className="btn btn-default"
-            type="button"
-            onClick={this.onCopyClick}>
+          <button className="btn btn-default" type="button" onClick={this.onCopyClick}>
             <i className="glyphicon glyphicon-copy" />
           </button>
         </span>
@@ -341,7 +304,7 @@ class Playground extends Component {
     super(props);
 
     // set default theme
-    const theme = "default";
+    const theme = 'default';
     // initialize state with Simple data sample
     const { schema, uiSchema, formData, validate } = samples.Simple;
     this.state = {
@@ -367,11 +330,11 @@ class Playground extends Component {
     const { themes } = this.props;
     const { theme } = this.state;
     const hash = document.location.hash.match(/#(.*)/);
-    if (hash && typeof hash[1] === "string" && hash[1].length > 0) {
+    if (hash && typeof hash[1] === 'string' && hash[1].length > 0) {
       try {
         this.load(JSON.parse(atob(hash[1])));
       } catch (err) {
-        alert("Unable to load form setup data.");
+        alert('Unable to load form setup data.');
       }
     } else {
       // initialize theme
@@ -415,13 +378,9 @@ class Playground extends Component {
 
   onFormDataEdited = formData => this.setState({ formData, shareURL: null });
 
-  onExtraErrorsEdited = extraErrors =>
-    this.setState({ extraErrors, shareURL: null });
+  onExtraErrorsEdited = extraErrors => this.setState({ extraErrors, shareURL: null });
 
-  onThemeSelected = (
-    theme,
-    { subthemes, stylesheet, theme: themeObj } = {}
-  ) => {
+  onThemeSelected = (theme, { subthemes, stylesheet, theme: themeObj } = {}) => {
     this.setState({
       theme,
       subthemes,
@@ -440,18 +399,10 @@ class Playground extends Component {
 
   setLiveSettings = ({ formData }) => this.setState({ liveSettings: formData });
 
-  onFormDataChange = ({ formData }) =>
-    this.setState({ formData, shareURL: null });
+  onFormDataChange = ({ formData }) => this.setState({ formData, shareURL: null });
 
   onShare = () => {
-    const {
-      formData,
-      schema,
-      uiSchema,
-      liveSettings,
-      errorSchema,
-      theme,
-    } = this.state;
+    const { formData, schema, uiSchema, liveSettings, errorSchema, theme } = this.state;
     const {
       location: { origin, pathname },
     } = document;
@@ -537,35 +488,19 @@ class Playground extends Component {
           </div>
         </div>
         <div className="col-sm-7">
-          <Editor
-            title="JSONSchema"
-            code={toJson(schema)}
-            onChange={this.onSchemaEdited}
-          />
+          <Editor title="JSONSchema" code={toJson(schema)} onChange={this.onSchemaEdited} />
           <div className="row">
             <div className="col-sm-6">
-              <Editor
-                title="UISchema"
-                code={toJson(uiSchema)}
-                onChange={this.onUISchemaEdited}
-              />
+              <Editor title="UISchema" code={toJson(uiSchema)} onChange={this.onUISchemaEdited} />
             </div>
             <div className="col-sm-6">
-              <Editor
-                title="formData"
-                code={toJson(formData)}
-                onChange={this.onFormDataEdited}
-              />
+              <Editor title="formData" code={toJson(formData)} onChange={this.onFormDataEdited} />
             </div>
           </div>
           {extraErrors && (
             <div className="row">
               <div className="col">
-                <Editor
-                  title="extraErrors"
-                  code={toJson(extraErrors || {})}
-                  onChange={this.onExtraErrorsEdited}
-                />
+                <Editor title="extraErrors" code={toJson(extraErrors || {})} onChange={this.onExtraErrorsEdited} />
               </div>
             </div>
           )}
@@ -575,23 +510,18 @@ class Playground extends Component {
             <DemoFrame
               head={
                 <React.Fragment>
-                  <link
-                    rel="stylesheet"
-                    id="theme"
-                    href={this.state.stylesheet || ""}
-                  />
-                  {theme === "antd" && (
+                  <link rel="stylesheet" id="theme" href={this.state.stylesheet || ''} />
+                  {theme === 'antd' && (
                     <div
                       dangerouslySetInnerHTML={{
-                        __html: document.getElementById("antd-styles-iframe")
-                          .contentDocument.head.innerHTML,
+                        __html: document.getElementById('antd-styles-iframe').contentDocument.head.innerHTML,
                       }}
                     />
                   )}
                 </React.Fragment>
               }
               style={{
-                width: "100%",
+                width: '100%',
                 height: 1000,
                 border: 0,
               }}
@@ -608,32 +538,24 @@ class Playground extends Component {
                 onChange={this.onFormDataChange}
                 noHtml5Validate={true}
                 onSubmit={({ formData }, e) => {
-                  console.log("submitted formData", formData);
-                  console.log("submit event", e);
+                  console.log('submitted formData', formData);
+                  console.log('submit event', e);
                 }}
                 fields={{ geo: GeoPosition }}
                 validate={validate}
-                onBlur={(id, value) =>
-                  console.log(`Touched ${id} with value ${value}`)
-                }
-                onFocus={(id, value) =>
-                  console.log(`Focused ${id} with value ${value}`)
-                }
+                onBlur={(id, value) => console.log(`Touched ${id} with value ${value}`)}
+                onFocus={(id, value) => console.log(`Focused ${id} with value ${value}`)}
                 transformErrors={transformErrors}
-                onError={log("errors")}
+                onError={log('errors')}
               />
             </DemoFrame>
           )}
         </div>
         <div className="col-sm-12">
-          <p style={{ textAlign: "center" }}>
-            Powered by{" "}
-            <a href="https://github.com/rjsf-team/react-jsonschema-form">
-              react-jsonschema-form
-            </a>
-            .
-            {process.env.SHOW_NETLIFY_BADGE === "true" && (
-              <div style={{ float: "right" }}>
+          <p style={{ textAlign: 'center' }}>
+            Powered by <a href="https://github.com/rjsf-team/react-jsonschema-form">react-jsonschema-form</a>.
+            {process.env.SHOW_NETLIFY_BADGE === 'true' && (
+              <div style={{ float: 'right' }}>
                 <a href="https://www.netlify.com">
                   <img src="https://www.netlify.com/img/global/badges/netlify-color-accent.svg" />
                 </a>

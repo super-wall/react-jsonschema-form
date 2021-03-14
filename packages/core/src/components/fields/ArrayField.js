@@ -184,12 +184,10 @@ function generateRowId() {
 function generateKeyedFormData(formData) {
   return !Array.isArray(formData)
     ? []
-    : formData.map(item => {
-        return {
-          key: generateRowId(),
-          item,
-        };
-      });
+    : formData.map(item => ({
+        key: generateRowId(),
+        item,
+      }));
 }
 
 function keyedToPlainFormData(keyedFormData) {
@@ -228,12 +226,10 @@ class ArrayField extends Component {
     const previousKeyedFormData = prevState.keyedFormData;
     const newKeyedFormData =
       nextFormData.length === previousKeyedFormData.length
-        ? previousKeyedFormData.map((previousKeyedFormDatum, index) => {
-            return {
-              key: previousKeyedFormDatum.key,
-              item: nextFormData[index],
-            };
-          })
+        ? previousKeyedFormData.map((previousKeyedFormDatum, index) => ({
+            key: previousKeyedFormDatum.key,
+            item: nextFormData[index],
+          }))
         : generateKeyedFormData(nextFormData);
     return {
       keyedFormData: newKeyedFormData,
@@ -300,122 +296,114 @@ class ArrayField extends Component {
     );
   };
 
-  onAddIndexClick = index => {
-    return event => {
-      if (event) {
-        event.preventDefault();
-      }
-      const { onChange } = this.props;
-      const newKeyedFormDataRow = {
-        key: generateRowId(),
-        item: this._getNewFormDataRow(),
-      };
-      let newKeyedFormData = [...this.state.keyedFormData];
-      newKeyedFormData.splice(index, 0, newKeyedFormDataRow);
-
-      this.setState(
-        {
-          keyedFormData: newKeyedFormData,
-          updatedKeyedFormData: true,
-        },
-        () => onChange(keyedToPlainFormData(newKeyedFormData))
-      );
+  onAddIndexClick = index => event => {
+    if (event) {
+      event.preventDefault();
+    }
+    const { onChange } = this.props;
+    const newKeyedFormDataRow = {
+      key: generateRowId(),
+      item: this._getNewFormDataRow(),
     };
+    let newKeyedFormData = [...this.state.keyedFormData];
+    newKeyedFormData.splice(index, 0, newKeyedFormDataRow);
+
+    this.setState(
+      {
+        keyedFormData: newKeyedFormData,
+        updatedKeyedFormData: true,
+      },
+      () => onChange(keyedToPlainFormData(newKeyedFormData))
+    );
   };
 
-  onDropIndexClick = index => {
-    return event => {
-      if (event) {
-        event.preventDefault();
-      }
-      const { onChange } = this.props;
-      const { keyedFormData } = this.state;
-      // refs #195: revalidate to ensure properly reindexing errors
-      let newErrorSchema;
-      if (this.props.errorSchema) {
-        newErrorSchema = {};
-        const errorSchema = this.props.errorSchema;
-        for (let i in errorSchema) {
-          i = parseInt(i);
-          if (i < index) {
-            newErrorSchema[i] = errorSchema[i];
-          } else if (i > index) {
-            newErrorSchema[i - 1] = errorSchema[i];
-          }
+  onDropIndexClick = index => event => {
+    if (event) {
+      event.preventDefault();
+    }
+    const { onChange } = this.props;
+    const { keyedFormData } = this.state;
+    // refs #195: revalidate to ensure properly reindexing errors
+    let newErrorSchema;
+    if (this.props.errorSchema) {
+      newErrorSchema = {};
+      const { errorSchema } = this.props;
+      for (let i in errorSchema) {
+        i = parseInt(i);
+        if (i < index) {
+          newErrorSchema[i] = errorSchema[i];
+        } else if (i > index) {
+          newErrorSchema[i - 1] = errorSchema[i];
         }
       }
-      const newKeyedFormData = keyedFormData.filter((_, i) => i !== index);
-      this.setState(
-        {
-          keyedFormData: newKeyedFormData,
-          updatedKeyedFormData: true,
-        },
-        () => onChange(keyedToPlainFormData(newKeyedFormData), newErrorSchema)
-      );
-    };
+    }
+    const newKeyedFormData = keyedFormData.filter((_, i) => i !== index);
+    this.setState(
+      {
+        keyedFormData: newKeyedFormData,
+        updatedKeyedFormData: true,
+      },
+      () => onChange(keyedToPlainFormData(newKeyedFormData), newErrorSchema)
+    );
   };
 
-  onReorderClick = (index, newIndex) => {
-    return event => {
-      if (event) {
-        event.preventDefault();
-        event.target.blur();
-      }
-      const { onChange } = this.props;
-      let newErrorSchema;
-      if (this.props.errorSchema) {
-        newErrorSchema = {};
-        const errorSchema = this.props.errorSchema;
-        for (let i in errorSchema) {
-          if (i == index) {
-            newErrorSchema[newIndex] = errorSchema[index];
-          } else if (i == newIndex) {
-            newErrorSchema[index] = errorSchema[newIndex];
-          } else {
-            newErrorSchema[i] = errorSchema[i];
-          }
+  onReorderClick = (index, newIndex) => event => {
+    if (event) {
+      event.preventDefault();
+      event.target.blur();
+    }
+    const { onChange } = this.props;
+    let newErrorSchema;
+    if (this.props.errorSchema) {
+      newErrorSchema = {};
+      const { errorSchema } = this.props;
+      for (let i in errorSchema) {
+        if (i == index) {
+          newErrorSchema[newIndex] = errorSchema[index];
+        } else if (i == newIndex) {
+          newErrorSchema[index] = errorSchema[newIndex];
+        } else {
+          newErrorSchema[i] = errorSchema[i];
         }
       }
+    }
 
-      const { keyedFormData } = this.state;
-      function reOrderArray() {
-        // Copy item
-        let _newKeyedFormData = keyedFormData.slice();
+    const { keyedFormData } = this.state;
+    function reOrderArray() {
+      // Copy item
+      let _newKeyedFormData = keyedFormData.slice();
 
-        // Moves item from index to newIndex
-        _newKeyedFormData.splice(index, 1);
-        _newKeyedFormData.splice(newIndex, 0, keyedFormData[index]);
+      // Moves item from index to newIndex
+      _newKeyedFormData.splice(index, 1);
+      _newKeyedFormData.splice(newIndex, 0, keyedFormData[index]);
 
-        return _newKeyedFormData;
-      }
-      const newKeyedFormData = reOrderArray();
-      this.setState(
-        {
-          keyedFormData: newKeyedFormData,
-        },
-        () => onChange(keyedToPlainFormData(newKeyedFormData), newErrorSchema)
-      );
-    };
+      return _newKeyedFormData;
+    }
+    const newKeyedFormData = reOrderArray();
+    this.setState(
+      {
+        keyedFormData: newKeyedFormData,
+      },
+      () => onChange(keyedToPlainFormData(newKeyedFormData), newErrorSchema)
+    );
   };
 
-  onChangeForIndex = index => {
-    return (value, errorSchema) => {
-      const { formData, onChange } = this.props;
-      const newFormData = formData.map((item, i) => {
-        // We need to treat undefined items as nulls to have validation.
-        // See https://github.com/tdegrunt/jsonschema/issues/206
-        const jsonValue = typeof value === "undefined" ? null : value;
-        return index === i ? jsonValue : item;
-      });
-      onChange(
-        newFormData,
-        errorSchema &&
-          this.props.errorSchema && {
-            ...this.props.errorSchema,
-            [index]: errorSchema,
-          }
-      );
-    };
+  onChangeForIndex = index => (value, errorSchema) => {
+    const { formData, onChange } = this.props;
+    const newFormData = formData.map((item, i) => {
+      // We need to treat undefined items as nulls to have validation.
+      // See https://github.com/tdegrunt/jsonschema/issues/206
+      const jsonValue = typeof value === "undefined" ? null : value;
+      return index === i ? jsonValue : item;
+    });
+    onChange(
+      newFormData,
+      errorSchema &&
+        this.props.errorSchema && {
+          ...this.props.errorSchema,
+          [index]: errorSchema,
+        }
+    );
   };
 
   onSelectChange = value => {
@@ -430,6 +418,7 @@ class ArrayField extends Component {
       registry = getDefaultRegistry(),
     } = this.props;
     const { rootSchema } = registry;
+    // 过于强制，有items，array类型才生效
     if (!schema.hasOwnProperty("items")) {
       const { fields } = registry;
       const { UnsupportedField } = fields;
@@ -442,15 +431,20 @@ class ArrayField extends Component {
         />
       );
     }
+
+    // 存在固定项
     if (isFixedItems(schema)) {
       return this.renderFixedArray();
     }
+    // 上传文件
     if (isFilesArray(schema, uiSchema, rootSchema)) {
       return this.renderFiles();
     }
+    // 多选
     if (isMultiSelect(schema, rootSchema)) {
       return this.renderMultiSelect();
     }
+    // 增删项类型
     return this.renderNormalArray();
   }
 
@@ -476,13 +470,14 @@ class ArrayField extends Component {
     const { TitleField, DescriptionField } = fields;
     const itemsSchema = retrieveSchema(schema.items, rootSchema);
     const formData = keyedToPlainFormData(this.state.keyedFormData);
+
     const arrayProps = {
       canAdd: this.canAddItem(formData),
       items: this.state.keyedFormData.map((keyedItem, index) => {
         const { key, item } = keyedItem;
         const itemSchema = retrieveSchema(schema.items, rootSchema, item);
         const itemErrorSchema = errorSchema ? errorSchema[index] : undefined;
-        const itemIdPrefix = idSchema.$id + "_" + index;
+        const itemIdPrefix = `${idSchema.$id}_${index}`;
         const itemIdSchema = toIdSchema(
           itemSchema,
           itemIdPrefix,
@@ -495,7 +490,7 @@ class ArrayField extends Component {
           index,
           canMoveUp: index > 0,
           canMoveDown: index < formData.length - 1,
-          itemSchema: itemSchema,
+          itemSchema,
           itemIdSchema,
           itemErrorSchema,
           itemData: item,
@@ -666,7 +661,7 @@ class ArrayField extends Component {
         const itemSchema = additional
           ? retrieveSchema(schema.additionalItems, rootSchema, item)
           : itemSchemas[index];
-        const itemIdPrefix = idSchema.$id + "_" + index;
+        const itemIdPrefix = `${idSchema.$id}_${index}`;
         const itemIdSchema = toIdSchema(
           itemSchema,
           itemIdPrefix,

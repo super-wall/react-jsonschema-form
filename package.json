@@ -15,8 +15,10 @@
     "start": "lerna run start --stream --parallel"
   },
   "dependencies": {
-    "prettier": "^1.18.2",
-    "lerna": "^3.18.3"
+    "lerna": "^3.18.3",
+    "monaco-editor": "^0.23.0",
+    "monaco-editor-webpack-plugin": "^3.0.1",
+    "prettier": "^1.18.2"
   },
   "prettier": {
     "jsxBracketSameLine": true,
