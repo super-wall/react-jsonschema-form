@@ -23,13 +23,18 @@ npm start
 - [x] SchemaField
 - [x] Array
 - [x] Numbers
-- [ ] onSubmit
 - [x] onChange
-- [ ] validate 校验、Error 以及 ErrorList 组件
 - [x] AddButton 组件
 - [x] withTheme 组件
-- [ ] utils 工具函数
-- [ ] fields 组件
+- [x] fields 组件
 - [ ] widgets 部件
-- [ ] playgorund 各种示例 debug
+- [ ] utils 工具函数
+- [ ] validate 校验、Error 以及 ErrorList 组件
+- [ ] onSubmit
+- [ ] order
+- [ ] Additional Properties
+- [ ] dependencies(property、schema)
+- [ ] oneOf
+- [ ] AnyOf
+- [ ] AllOf
 - [ ] 写一篇博客

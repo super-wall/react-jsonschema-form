@@ -29,6 +29,7 @@ function StringField(props) {
   } = props;
   const { title, format } = schema;
   const { widgets, formContext } = registry;
+  // enum enumNames 默认Select widget
   const enumOptions = isSelect(schema) && optionsList(schema);
   let defaultWidget = enumOptions ? "select" : "text";
   if (format && hasWidget(schema, format, widgets)) {

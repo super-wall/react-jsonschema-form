@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
+// 不支持的Field组件
 function UnsupportedField({ schema, idSchema, reason }) {
   return (
     <div className="unsupported-field">

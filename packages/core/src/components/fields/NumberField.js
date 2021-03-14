@@ -32,6 +32,8 @@ const trailingCharMatcher = /[0.]0*$/;
  *    value cached in the state. If it matches the cached value, the cached
  *    value is passed to the input instead of the formData value
  */
+
+// 对数字、数字字符串做一下处理
 class NumberField extends React.Component {
   constructor(props) {
     super(props);
