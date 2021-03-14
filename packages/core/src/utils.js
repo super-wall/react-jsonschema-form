@@ -110,6 +110,7 @@ export function getSchemaType(schema) {
   return type;
 }
 
+// 获取对应widget
 export function getWidget(schema, widget, registeredWidgets = {}) {
   const type = getSchemaType(schema);
 
@@ -362,6 +363,7 @@ export function mergeDefaultsWithFormData(defaults, formData) {
   }
 }
 
+// 获取ui类型参数
 export function getUiOptions(uiSchema) {
   // get all passed options from ui:widget, ui:options, and ui:<optionName>
   return Object.keys(uiSchema)

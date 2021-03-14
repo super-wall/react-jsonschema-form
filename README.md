@@ -22,15 +22,14 @@ npm start
 - [x] Form 组件
 - [x] SchemaField
 - [x] Array
-- [ ] Numbers
+- [x] Numbers
 - [ ] onSubmit
 - [x] onChange
 - [ ] validate 校验、Error 以及 ErrorList 组件
-- [ ] AddButton 组件
+- [x] AddButton 组件
 - [x] withTheme 组件
 - [ ] utils 工具函数
 - [ ] fields 组件
 - [ ] widgets 部件
 - [ ] playgorund 各种示例 debug
 - [ ] 写一篇博客
-- [ ] rootSchema、formContext
