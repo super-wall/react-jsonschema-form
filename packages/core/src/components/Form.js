@@ -340,14 +340,17 @@ export default class Form extends Component {
       newFormData = this.getUsedFormData(newFormData, fieldNames);
     }
 
+    // 校验
     if (!this.props.noValidate) {
       let schemaValidation = this.validate(newFormData);
       let errors = schemaValidation.errors;
       let errorSchema = schemaValidation.errorSchema;
+      // 保存未合并额外错误的信息
       const schemaValidationErrors = errors;
       const schemaValidationErrorSchema = errorSchema;
       if (Object.keys(errors).length > 0) {
         if (this.props.extraErrors) {
+          // 合并传入的额外信息
           errorSchema = mergeObjects(
             errorSchema,
             this.props.extraErrors,
@@ -363,6 +366,7 @@ export default class Form extends Component {
             schemaValidationErrorSchema,
           },
           () => {
+            // 触发传入的onErrors
             if (this.props.onError) {
               this.props.onError(errors);
             } else {
@@ -374,8 +378,10 @@ export default class Form extends Component {
       }
     }
 
+    // 校验通过
     let errorSchema;
     let errors;
+    // 额外的错误
     if (this.props.extraErrors) {
       errorSchema = this.props.extraErrors;
       errors = toErrorList(errorSchema);
@@ -384,6 +390,7 @@ export default class Form extends Component {
       errors = [];
     }
 
+    // 更新state，触发props Onsubmit
     this.setState(
       { formData: newFormData, errors: errors, errorSchema: errorSchema },
       () => {

@@ -27,10 +27,10 @@ npm start
 - [x] AddButton 组件
 - [x] withTheme 组件
 - [x] fields 组件
-- [ ] widgets 部件
-- [ ] utils 工具函数
-- [ ] validate 校验、Error 以及 ErrorList 组件
-- [ ] onSubmit
+- [x] widgets 部件
+- [x] utils 工具函数
+- [x] validate 校验、Error 以及 ErrorList 组件
+- [x] onSubmit
 - [ ] order
 - [ ] Additional Properties
 - [ ] dependencies(property、schema)
